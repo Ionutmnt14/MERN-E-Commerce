@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAppContext } from "../context/AppContext";
 import { assets, dummyAddress } from "../assets/assets";
+import { div } from "motion/react-client";
 
 const Cart = () => {
   const {
@@ -53,73 +54,87 @@ const Cart = () => {
           <p className="text-center">Subtotal</p>
           <p className="text-center">Action</p>
         </div>
-
-        {cartArray.map((product, index) => (
-          <div
-            key={index}
-            className="grid grid-cols-[2fr_1fr_1fr] text-gray-500 items-center text-sm md:text-base font-medium pt-3"
-          >
-            <div className="flex items-center md:gap-6 gap-3">
+        {products.length > 0 && Object.keys(cartItems).length > 0 ? (
+          <>
+            {cartArray.map((product, index) => (
               <div
-                onClick={() => {
-                  navigate(
-                    `/products/${product.category.toLowerCase()}/${product._id}`
-                  );
-                  scrollTo(0, 0);
-                }}
-                className="cursor-pointer w-24 h-24 flex items-center justify-center border border-gray-300 rounded"
+                key={index}
+                className="grid grid-cols-[2fr_1fr_1fr] text-gray-500 items-center text-sm md:text-base font-medium pt-3"
               >
-                <img
-                  className="max-w-full h-full object-cover"
-                  src={product.image[0]}
-                  alt={product.name}
-                />
-              </div>
-              <div>
-                <p className="hidden md:block font-semibold">{product.name}</p>
-                <div className="font-normal text-gray-500/70">
-                  <p>
-                    Weight: <span>{product.weight || "N/A"}</span>
-                  </p>
-                  <div className="flex items-center">
-                    <p>Quantity:</p>
-                    <select
-                      onChange={(e) =>
-                        updateCartItem(product._id, Number(e.target.value))
-                      }
-                      value={cartItems[product._id]}
-                      className="outline-none"
-                    >
-                      {Array(
-                        cartItems[product._id] > 9 ? cartItems[product._id] : 9
-                      )
-                        .fill("")
-                        .map((_, index) => (
-                          <option key={index} value={index + 1}>
-                            {index + 1}
-                          </option>
-                        ))}
-                    </select>
+                <div className="flex items-center md:gap-6 gap-3">
+                  <div
+                    onClick={() => {
+                      navigate(
+                        `/products/${product.category.toLowerCase()}/${
+                          product._id
+                        }`
+                      );
+                      scrollTo(0, 0);
+                    }}
+                    className="cursor-pointer w-24 h-24 flex items-center justify-center border border-gray-300 rounded"
+                  >
+                    <img
+                      className="max-w-full h-full object-cover"
+                      src={product.image[0]}
+                      alt={product.name}
+                    />
+                  </div>
+                  <div>
+                    <p className="hidden md:block font-semibold">
+                      {product.name}
+                    </p>
+                    <div className="font-normal text-gray-500/70">
+                      <p>
+                        Weight: <span>{product.weight || "N/A"}</span>
+                      </p>
+                      <div className="flex items-center">
+                        <p>Quantity:</p>
+                        <select
+                          onChange={(e) =>
+                            updateCartItem(product._id, Number(e.target.value))
+                          }
+                          value={cartItems[product._id]}
+                          className="outline-none"
+                        >
+                          {Array(
+                            cartItems[product._id] > 9
+                              ? cartItems[product._id]
+                              : 9
+                          )
+                            .fill("")
+                            .map((_, index) => (
+                              <option key={index} value={index + 1}>
+                                {index + 1}
+                              </option>
+                            ))}
+                        </select>
+                      </div>
+                    </div>
                   </div>
                 </div>
+                <p className="text-center">
+                  {currency}
+                  {product.offerPrice * product.quantity}
+                </p>
+                <button
+                  onClick={() => removeFromCart(product._id)}
+                  className="cursor-pointer mx-auto"
+                >
+                  <img
+                    src={assets.remove_icon}
+                    alt="remove-icon"
+                    className="inline-block w-6 h-6"
+                  />
+                </button>
               </div>
-            </div>
-            <p className="text-center">
-              {currency}
-              {product.offerPrice * product.quantity}
-            </p>
-            <button
-              onClick={() => removeFromCart()}
-              className="cursor-pointer mx-auto"
-            >
-              <img
-                src={assets.remove_icon}
-                alt="remove-icon"
-                className="inline-block w-6 h-6"
-              />
-            </button>
-          </div>
-        ))}
+            ))}
+          </>
+        ) : (
+          <p className="text-center text-lg py-32">
+            You didn't add any items to the cart. Please add items to the cart
+            to proceed with the order.{" "}
+          </p>
+        )}
 
         <button
           onClick={() => {
