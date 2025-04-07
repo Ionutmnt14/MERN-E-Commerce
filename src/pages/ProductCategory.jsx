@@ -2,7 +2,6 @@ import React from "react";
 import { useAppContext } from "../context/AppContext";
 import { useParams } from "react-router-dom";
 import { categories } from "../assets/assets";
-import { div } from "motion/react-client";
 import ProductCard from "../components/ProductCard";
 
 const ProductCategory = () => {
