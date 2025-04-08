@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppContext } from "../context/AppContext";
 import { assets, dummyAddress } from "../assets/assets";
-import { div } from "motion/react-client";
 
 const Cart = () => {
   const {

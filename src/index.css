@@ -10,3 +10,12 @@
   --color-primary: #4fbf8b;
   --color-primary-dull: #44ea7c;
 }
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
